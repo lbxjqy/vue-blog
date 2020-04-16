@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-26 23:15:06
- * @LastEditTime: 2020-04-02 04:44:30
+ * @LastEditTime: 2020-04-17 03:54:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /api/Users/linboxuan/vscodeProjects/vue-blog/src/components/HelloWorld.vue
@@ -13,9 +13,9 @@
                     <a href="javascript:void(0)" class="article-title">
                         <h2>{{item.title}}</h2>
                     </a>
-                    <p class="article-desc">{{item.desript}}</p>
+                    <p class="article-desc">{{item.describe}}</p>
                     <div class="article-info">
-                        <span class="time">{{item.updatedAt}}</span>
+                        <span class="time">{{item.updateAt}}</span>
                         <span class="time"><strong v-if="item.meta">
                           <i>{{item.meta.views}}</i>
                         </strong>次阅读</span>
@@ -55,77 +55,35 @@
 let page = 1
 // let fetchTags = getTag()
 // let fetxhArticle = getArticle({current_page: page})
+import { getHomePageArticleList, getHomePageHotArticleList } from '@/api/article'
+
 export default {
-  head () {
-    return {
-      title: 'Lin | 文章'
-    }
-  },
   data () {
     return {
-      articleList: [
-          {
-            title: '特别特别特别长的文章标题',
-            desript: '1000字描述',
-            updatedAt: '2019/10/10',
-            meta:{
-              views:1,
-              comments:2,
-              likes:3
-            }
-          },
-          {
-            title: '文章1',
-            desript: '1000字描述',
-            updatedAt: '2019/10/10',
-            meta:{
-              views:1,
-              comments:2,
-              likes:3
-            }
-          },
-          {
-            title: '文章2',
-            desript: '1000字描述',
-            updatedAt: '2019/10/10',
-            meta:{
-              views:1,
-              comments:2,
-              likes:3
-            }
-          }
-        ],
-        hotArticleList: [
-          {
-            title: "文章title1"
-          },
-          {
-            title: "文章title2"
-          },
-          {
-            title: "文章title3"
-          },
-          {
-            title: "文章title2"
-          },
-          {
-            title: "文章title2"
-          }
-        ],
-        tagList: [
-          {
-            name: "JavaScript",
-            count: 5
-          },
-          {
-            name: "Node.Js",
-            count: 10
-          },
-          {
-            name: "Vue",
-            count: 1
-          }
-        ]
+        articleList: [],
+        hotArticleList: [],
+        tagList: []
+    }
+  },
+  created() {
+    this.fetchArticleList()
+    this.fetchHotArticleList()
+    this.fetchTagList()
+  },
+  methods: {
+    fetchArticleList() {
+      getHomePageArticleList().then(response => {
+        console.log(response.data.data)
+        this.articleList = response.data.data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    fetchHotArticleList() {
+
+    },
+    fetchTagList() {
+
     }
   }
 }

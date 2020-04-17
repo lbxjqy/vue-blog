@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-04-16 18:34:08
- * @LastEditTime: 2020-04-16 18:42:19
+ * @LastEditTime: 2020-04-18 02:37:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /api/Users/linboxuan/vscodeProjects/vue-blog/src/api/article.js
@@ -21,5 +21,13 @@ export function getHomePageHotArticleList(params) {
         url: '/api/article/homePageHotList',
         method: 'get',
         params
+    })
+}
+
+export function articleGetContent(id) {
+    return request({
+        url: '/api/article/articleGetContent',
+        method: 'get',
+        params: { id }
     })
 }

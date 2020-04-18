@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-03-27 00:22:09
- * @LastEditTime: 2020-04-02 04:42:10
+ * @LastEditTime: 2020-04-19 03:56:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /api/Users/linboxuan/vscodeProjects/vue-blog/src/components/header.vue
@@ -36,13 +36,17 @@
   					</div>
 				</div>
 			</div>
-      <i class="el-icon-search searchFont"></i>
+      <!-- <router-link :to="{path:'/article',params:{title: searchStr}}"> -->
+      <i class="el-icon-search searchFont" @click="queryByArticle"></i>
+      <!-- </router-link> -->
 
     </section>
   </header>
   
 </template>
 <script>
+import { getHomePageArticleList } from '@/api/article'
+
 export default {
   
   data() {
@@ -65,7 +69,21 @@ export default {
     toLink(route, index) {
       if(this.$route.path == route) return;//如果当前路由和跳转路由相同，return
       this.navIndex = index;//当前菜单选中下标修改，从而改变选中菜单颜色
-      this.$router.push(route);//跳转路由
+      this.$router.replace(route);//跳转路由
+    },
+    queryByArticle() {
+      let params = {
+        title: this.searchStr
+      }
+      getHomePageArticleList(params).then(response => {
+        this.$router.push({
+          path:'/article',
+          query:{
+            title:this.searchStr
+          }
+        })
+			  // this.searchStr = ''
+      })
     }
   }
 }

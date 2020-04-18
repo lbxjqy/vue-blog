@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2020-03-26 23:15:06
- * @LastEditTime: 2020-04-19 01:04:57
+ * @Date: 2020-04-19 00:04:28
+ * @LastEditTime: 2020-04-19 04:03:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /api/Users/linboxuan/vscodeProjects/vue-blog/src/components/HelloWorld.vue
+ * @FilePath: /api/Users/linboxuan/vscodeProjects/vue-blog/src/components/articleSearch.vue
  -->
 <template>
     <div class="articleBox">
@@ -28,28 +28,6 @@
             </div>
           </div>
         </section>
-        <section class="side">
-          <div class="hot">
-            <p class="hot-title">热点文章</p>
-            <div class="hot-info">
-              <!-- <a href="javascript:void(0)" v-for="(item, index) in hotArticleList"
-                :key="index"> -->
-              <router-link :to="'/article/'+item._id" v-for="(item, index) in hotArticleList" :key="index">
-                <h3>{{item.title}}</h3>
-              </router-link>
-              <!-- </a> -->
-            </div>
-          </div>
-          <div class="tag">
-            <p class="tag-title">标签</p>
-            <div class="tag-info">
-              <a href="javascript:void(0)" v-for="(item, index) in tagList"
-                :key="index">
-                <h3 @click="queryByTag(item._id)">{{item._id}}({{item.count}})</h3>
-              </a>
-            </div>
-          </div>
-        </section>
     </div>
 </template>
 
@@ -57,8 +35,7 @@
 let page = 1
 // let fetchTags = getTag()
 // let fetxhArticle = getArticle({current_page: page})
-import { getHomePageArticleList, getHomePageHotArticleList } from '@/api/article'
-import { getHomePageTagList } from '@/api/tag'
+import { getHomePageArticleList } from '@/api/article'
 
 export default {
   filters: {
@@ -81,42 +58,23 @@ export default {
         tagList: []
     }
   },
+  // 坚挺路由变化
+  watch:{
+    $route(){
+      const params = this.$route.query
+      this.fetchArticleList(params)
+    }
+  },
   created() {
-    this.fetchArticleList()
-    this.fetchHotArticleList()
-    this.fetchTagList()
+    const params = this.$route.query
+    this.fetchArticleList(params)
   },
   methods: {
-    fetchArticleList() {
-      getHomePageArticleList().then(response => {
-        this.articleList = response.data.data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    fetchHotArticleList() {
-      getHomePageHotArticleList().then(response => {
-        this.hotArticleList = response.data.data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    fetchTagList() {
-      getHomePageTagList().then(response => {
-        this.tagList = response.data.data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    queryByTag(tagName) {
-      let params={
-        tag:tagName
-      }
-      console.log(params)
+    fetchArticleList(params) {
       getHomePageArticleList(params).then(response => {
         this.articleList = response.data.data
       }).catch(err => {
-        console.log(err);
+        console.log(err)
       })
     }
   }
